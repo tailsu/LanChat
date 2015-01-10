@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="LanChat.LanChatView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Nick: " VerticalAlignment="Center"/>
+            <TextBox Grid.Column="1" VerticalAlignment="Center"
+                     Text="{Binding Nick, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Login" Grid.Column="2" Margin="4" Width="60" Height="25"
+                    Command="{Binding LoginCommand}"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+            <ListBox Margin="2" ItemsSource="{Binding MessageHistory}"
+                     Grid.IsSharedSizeScope="True">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition SharedSizeGroup="nick"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Nick, StringFormat='{}{0}: '}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Message}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ListBox>
+            <ListBox ItemsSource="{Binding ChatParticipants}" Grid.Column="1" Margin="2"/>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Say: " VerticalAlignment="Center"/>
+            <TextBox x:Name="messageBox" Grid.Column="1" KeyDown="MessageBoxKeyDown"/>
+        </Grid>
+    </Grid>
+</UserControl>
